@@ -9,7 +9,7 @@ cr = base_de_datos.cursor()
 
 def crearTabla():
     cr.execute('''
-        CREATE TABLE IF NOT EXISTS estudiantes(
+        CREATE TABLE IF NOT EXISTS tabla(
         ID INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
         Nombre TEXT NOT NULL,
         Edad TEXT NOT NULL,
@@ -18,10 +18,12 @@ def crearTabla():
     base_de_datos.commit()
     print("Creado")
 
-cr.execute('''SELECT * FROM estudiantes;''')
-datos =cr.fetchall()
+
+
 
 def rellenar_tabla(tabla):
+    cr.execute('''SELECT * FROM tabla;''')
+    datos = cr.fetchall()
     for dato in datos:
         tabla.insert("", "end", values=dato)
 
@@ -30,14 +32,42 @@ def limpiar_tabla(tabla):
             tabla.delete(item)
 
 def ingresarDatos():
-    n = str(input("ingrese su nombre "))
-    a = str(input("ingrese su apellido "))
-    g = str(input("ingrese su genero "))
-    cr.execute('''
-        INSERT INTO estudiantes(nombre, apellido, genero)
-        VALUES(?,?,?)''',(n, a, g))
-    base_de_datos.commit()
-    print("Datos ingresados existosamente")
+    ventana = Toplevel(marco2)
+    ventana.title("Ventana Secundaria")
+    ventana.geometry()
+
+    boton_cerrar = Button(ventana, text="Cerrar", command=ventana.destroy)
+    boton_cerrar.pack()
+
+    etiqueta = Label(ventana, text = "Ingrese el Nombre")
+    etiqueta.pack()
+    caja = Entry(ventana)
+    caja.pack()
+    Nombre = caja.get()
+
+    etiqueta2 = Label(ventana, text="Ingrese la edad")
+    etiqueta2.pack()
+    caja2 = Entry(ventana)
+    caja2.pack()
+
+    Edad = caja2.get()
+
+    etiqueta3 = Label(ventana, text="Ingrese el Stock")
+    etiqueta3.pack()
+    caja3 = Entry(ventana)
+
+    caja3.pack()
+    Stock = caja3.get()
+
+    def guardar():
+            cr.execute('''
+                INSERT INTO tabla(Nombre, Edad, Stock)
+                VALUES(?,?,?)''',(Nombre, Edad, Stock))
+            base_de_datos.commit()
+            print("Datos ingresados existosamente")
+
+    btn = Button(ventana, text = "guardar", command= guardar)
+    btn.pack()
 
 app = Tk()
 app.title("Aplicacion y tablas")
@@ -64,7 +94,5 @@ btn = Button(marco2, text = "Agregar", command = ingresarDatos)
 btn.grid(row = 1 , column = 3)
 
 rellenar_tabla(tabla)
-tabla.after(2000, lambda: limpiar_tabla(tabla))
-
 
 app.mainloop()
