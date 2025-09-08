@@ -2,6 +2,7 @@ from sqlite3 import *
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
+from tkinter.ttk import Notebook
 
 base_de_datos = connect("tabla.db")
 cr = base_de_datos.cursor()
@@ -28,11 +29,24 @@ def limpiar_tabla(tabla):
     for item in tabla.get_children():
             tabla.delete(item)
 
+def ingresarDatos():
+    n = str(input("ingrese su nombre "))
+    a = str(input("ingrese su apellido "))
+    g = str(input("ingrese su genero "))
+    cr.execute('''
+        INSERT INTO estudiantes(nombre, apellido, genero)
+        VALUES(?,?,?)''',(n, a, g))
+    base_de_datos.commit()
+    print("Datos ingresados existosamente")
+
 app = Tk()
 app.title("Aplicacion y tablas")
 
-
-tabla = ttk.Treeview(app, columns=("ID", "Nombre", "Edad","Stock"), show="headings")
+marco = Frame(app)
+marco.grid(row=1,column=0)
+tabla = ttk.Treeview(marco, columns=("ID", "Nombre", "Edad","Stock"), show="headings")
+marco2 = Frame(app)
+marco2.grid(row = 2, column = 0)
 
 
 tabla.heading("ID", text="ID")
@@ -46,6 +60,8 @@ for col in tabla["columns"]:
 
 tabla.pack()
 
+btn = Button(marco2, text = "Agregar", command = ingresarDatos)
+btn.grid(row = 1 , column = 3)
 
 rellenar_tabla(tabla)
 tabla.after(2000, lambda: limpiar_tabla(tabla))
