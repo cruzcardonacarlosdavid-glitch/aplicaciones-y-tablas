@@ -1,6 +1,7 @@
 from sqlite3 import *
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
 
 base_de_datos = connect("tabla.db")
 cr = base_de_datos.cursor()
@@ -23,36 +24,31 @@ def rellenar_tabla(tabla):
     for dato in datos:
         tabla.insert("", "end", values=dato)
 
-#Iniciamos la aplicacion
+def limpiar_tabla(tabla):
+    for item in tabla.get_children():
+            tabla.delete(item)
+
 app = Tk()
 app.title("Aplicacion y tablas")
 
-#Creamos el widget Treeview
+
 tabla = ttk.Treeview(app, columns=("ID", "Nombre", "Edad","Stock"), show="headings")
 
-#Colocamos sus encabezados
+
 tabla.heading("ID", text="ID")
 tabla.heading("Nombre", text="Nombre")
 tabla.heading("Edad", text="Edad")
 tabla.heading("Stock", text ="Stock")
 
-#Ajustar el ancho de las columnas
+
 for col in tabla["columns"]:
     tabla.column(col, anchor="center", width=100)
 
-
-
-#Empaquetar el widget Treeview
 tabla.pack()
 
 
-
-
-#Se invocan los métodos para ejemplificar
 rellenar_tabla(tabla)
+tabla.after(2000, lambda: limpiar_tabla(tabla))
 
 
-
-
-#Se inicia el bucle principal
 app.mainloop()
