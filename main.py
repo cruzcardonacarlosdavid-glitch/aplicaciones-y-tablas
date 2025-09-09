@@ -114,6 +114,36 @@ def modificar():
     btn = Button(ventana, text="modificar", command=modificaru)
     btn.pack()
 
+def eliminar():
+    ventana = Toplevel(marco2)
+    ventana.title("Modificar")
+    ventana.geometry()
+
+    boton_cerrar = Button(ventana, text="Cerrar", command=ventana.destroy)
+    boton_cerrar.pack()
+
+    etiqueta1 = Label(ventana, text="Ingrese el ID de los datos que quiere modificar")
+    etiqueta1.pack()
+    caja1 = Entry(ventana)
+    caja1.pack()
+
+
+
+    base_de_datos.commit()
+    def eliminador():
+        ID = caja1.get()
+        cr.execute('''
+                 DELETE tabla WHERE ID  = ?''', (id,))
+        base_de_datos.commit()
+        print("Datos ingresados existosamente")
+
+        limpiar_tabla(tabla)
+        rellenar_tabla(tabla)
+
+    btn = Button(ventana, text="eliminar", command=eliminador)
+    btn.pack()
+
+
 app = Tk()
 app.title("Aplicacion y tablas")
 
@@ -135,12 +165,17 @@ for col in tabla["columns"]:
 
 tabla.pack()
 
-btn = Button(marco2, text = "Agregar", command = ingresarDatos)
-btn.grid(row = 1 , column = 3)
+btn = Button(marco2, text = "Agregar", command = ingresarDatos,width=30)
+btn.grid(row = 1 , column = 0)
 
-btn = Button(marco2, text = "Modificar", command = modificar)
-btn.grid(row = 2 , column = 3)
+btn = Button(marco2, text = "Modificar", command = modificar,width=30)
+btn.grid(row = 1 , column = 1)
 
+btn = Button(marco2, text = "eliminar", command = eliminar,width=30)
+btn.grid(row = 2, column = 0)
+
+btn = Button(marco2, text  = "cerrar", command = app.destroy,width=30)
+btn.grid(row = 2, column = 1)
 rellenar_tabla(tabla)
 
 app.mainloop()
