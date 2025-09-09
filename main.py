@@ -96,22 +96,22 @@ def modificar():
     caja3 = Entry(ventana)
     caja3.pack()
 
-    def guardar():
+    def modificaru():
         ID = caja1.get()
         Nombre = caja.get()
         Precio = caja2.get()
         Stock = caja3.get()
         cr.execute('''
-           UPDATE estudiantes
+           UPDATE tabla
            SET Nombre = ?, Precio = ?, Stock = ?
-           where ID = ? values(?,?,?,?,?)''', (ID,Nombre, Precio, Stock))
+           WHERE ID = ? ''', (Nombre, Precio, Stock,ID))
         base_de_datos.commit()
         print("Datos ingresados existosamente")
 
         limpiar_tabla(tabla)
         rellenar_tabla(tabla)
 
-    btn = Button(ventana, text="guardar", command=guardar)
+    btn = Button(ventana, text="modificar", command=modificaru)
     btn.pack()
 
 app = Tk()
