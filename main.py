@@ -12,7 +12,7 @@ def crearTabla():
         CREATE TABLE IF NOT EXISTS tabla(
         ID INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
         Nombre TEXT NOT NULL,
-        Edad TEXT NOT NULL,
+        Precio TEXT NOT NULL,
         Stock TEXT NOT NULL);
         ''')
     base_de_datos.commit()
@@ -43,28 +43,34 @@ def ingresarDatos():
     etiqueta.pack()
     caja = Entry(ventana)
     caja.pack()
-    Nombre = caja.get()
 
-    etiqueta2 = Label(ventana, text="Ingrese la edad")
+
+    etiqueta2 = Label(ventana, text="Ingrese el precio")
     etiqueta2.pack()
     caja2 = Entry(ventana)
     caja2.pack()
 
-    Edad = caja2.get()
+
 
     etiqueta3 = Label(ventana, text="Ingrese el Stock")
     etiqueta3.pack()
     caja3 = Entry(ventana)
 
     caja3.pack()
-    Stock = caja3.get()
+
 
     def guardar():
-            cr.execute('''
-                INSERT INTO tabla(Nombre, Edad, Stock)
-                VALUES(?,?,?)''',(Nombre, Edad, Stock))
-            base_de_datos.commit()
-            print("Datos ingresados existosamente")
+        Nombre = caja.get()
+        Precio = caja2.get()
+        Stock = caja3.get()
+        cr.execute('''
+            INSERT INTO tabla(Nombre,Precio , Stock)
+            VALUES(?,?,?)''',(Nombre, Precio, Stock))
+        base_de_datos.commit()
+        print("Datos ingresados existosamente")
+
+        limpiar_tabla(tabla)
+        rellenar_tabla(tabla)
 
     btn = Button(ventana, text = "guardar", command= guardar)
     btn.pack()
