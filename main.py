@@ -18,9 +18,6 @@ def crearTabla():
     base_de_datos.commit()
     print("Creado")
 
-
-
-
 def rellenar_tabla(tabla):
     cr.execute('''SELECT * FROM tabla;''')
     datos = cr.fetchall()
@@ -33,7 +30,7 @@ def limpiar_tabla(tabla):
 
 def ingresarDatos():
     ventana = Toplevel(marco2)
-    ventana.title("Ventana Secundaria")
+    ventana.title("Agregar")
     ventana.geometry()
 
     boton_cerrar = Button(ventana, text="Cerrar", command=ventana.destroy)
@@ -44,20 +41,15 @@ def ingresarDatos():
     caja = Entry(ventana)
     caja.pack()
 
-
     etiqueta2 = Label(ventana, text="Ingrese el precio")
     etiqueta2.pack()
     caja2 = Entry(ventana)
     caja2.pack()
 
-
-
     etiqueta3 = Label(ventana, text="Ingrese el Stock")
     etiqueta3.pack()
     caja3 = Entry(ventana)
-
     caja3.pack()
-
 
     def guardar():
         Nombre = caja.get()
@@ -73,6 +65,53 @@ def ingresarDatos():
         rellenar_tabla(tabla)
 
     btn = Button(ventana, text = "guardar", command= guardar)
+    btn.pack()
+
+def modificar():
+    ventana = Toplevel(marco2)
+    ventana.title("Modificar")
+    ventana.geometry()
+
+    boton_cerrar = Button(ventana, text="Cerrar", command=ventana.destroy)
+    boton_cerrar.pack()
+
+
+    etiqueta1 = Label(ventana, text="Ingrese el ID de los datos que quiere modificar")
+    etiqueta1.pack()
+    caja1 = Entry(ventana)
+    caja1.pack()
+
+    etiqueta = Label(ventana, text="Ingrese el Nombre")
+    etiqueta.pack()
+    caja = Entry(ventana)
+    caja.pack()
+
+    etiqueta2 = Label(ventana, text="Ingrese el precio")
+    etiqueta2.pack()
+    caja2 = Entry(ventana)
+    caja2.pack()
+
+    etiqueta3 = Label(ventana, text="Ingrese el Stock")
+    etiqueta3.pack()
+    caja3 = Entry(ventana)
+    caja3.pack()
+
+    def guardar():
+        ID = caja1.get()
+        Nombre = caja.get()
+        Precio = caja2.get()
+        Stock = caja3.get()
+        cr.execute('''
+           UPDATE estudiantes
+           SET Nombre = ?, Precio = ?, Stock = ?
+           where ID = ? values(?,?,?,?,?)''', (ID,Nombre, Precio, Stock))
+        base_de_datos.commit()
+        print("Datos ingresados existosamente")
+
+        limpiar_tabla(tabla)
+        rellenar_tabla(tabla)
+
+    btn = Button(ventana, text="guardar", command=guardar)
     btn.pack()
 
 app = Tk()
@@ -98,6 +137,9 @@ tabla.pack()
 
 btn = Button(marco2, text = "Agregar", command = ingresarDatos)
 btn.grid(row = 1 , column = 3)
+
+btn = Button(marco2, text = "Modificar", command = modificar)
+btn.grid(row = 2 , column = 3)
 
 rellenar_tabla(tabla)
 
