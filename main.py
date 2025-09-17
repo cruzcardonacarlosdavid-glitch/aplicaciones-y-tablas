@@ -75,7 +75,6 @@ def modificar():
     boton_cerrar = Button(ventana, text="Cerrar", command=ventana.destroy)
     boton_cerrar.pack()
 
-
     etiqueta1 = Label(ventana, text="Ingrese el ID de los datos que quiere modificar")
     etiqueta1.pack()
     caja1 = Entry(ventana)
