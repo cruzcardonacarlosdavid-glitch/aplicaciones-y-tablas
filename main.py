@@ -55,14 +55,17 @@ def ingresarDatos():
         Nombre = caja.get()
         Precio = caja2.get()
         Stock = caja3.get()
-        cr.execute('''
-            INSERT INTO tabla(Nombre,Precio , Stock)
-            VALUES(?,?,?)''',(Nombre, Precio, Stock))
-        base_de_datos.commit()
-        print("Datos ingresados existosamente")
+        if Nombre == "" or Precio == "" or Stock == "":
+            messagebox.showwarning("ALERTA", "No hay nada escirto por favor ingresa de todos los datos")
+        else:
+            cr.execute('''
+                INSERT INTO tabla(Nombre,Precio , Stock)
+                VALUES(?,?,?)''',(Nombre, Precio, Stock))
+            base_de_datos.commit()
+            print("Datos ingresados existosamente")
 
-        limpiar_tabla(tabla)
-        rellenar_tabla(tabla)
+            limpiar_tabla(tabla)
+            rellenar_tabla(tabla)
 
     btn = Button(ventana, text = "guardar", command= guardar)
     btn.pack()
@@ -100,15 +103,19 @@ def modificar():
         Nombre = caja.get()
         Precio = caja2.get()
         Stock = caja3.get()
-        cr.execute('''
-           UPDATE tabla
-           SET Nombre = ?, Precio = ?, Stock = ?
-           WHERE ID = ? ''', (Nombre, Precio, Stock,ID))
-        base_de_datos.commit()
-        print("Datos ingresados existosamente")
 
-        limpiar_tabla(tabla)
-        rellenar_tabla(tabla)
+        if ID == "" or Nombre == "" or Precio == "" or Stock == "":
+            messagebox.showwarning("ALERTA", "No hay nada escirto por favor ingresa de todos los datos")
+        else:
+            cr.execute('''
+               UPDATE tabla
+               SET Nombre = ?, Precio = ?, Stock = ?
+               WHERE ID = ? ''', (Nombre, Precio, Stock,ID))
+            base_de_datos.commit()
+            print("Datos ingresados existosamente")
+
+            limpiar_tabla(tabla)
+            rellenar_tabla(tabla)
 
     btn = Button(ventana, text="modificar", command=modificaru)
     btn.pack()
@@ -131,13 +138,16 @@ def eliminar():
     base_de_datos.commit()
     def eliminador():
         ID = caja1.get()
-        cr.execute('''
-                 DELETE tabla WHERE ID  = ?''', (id,))
-        base_de_datos.commit()
-        print("Datos ingresados existosamente")
+        if ID == "" :
+            messagebox.showwarning("ALERTA", "No hay nada escirto por favor ingresa de todos los datos")
+        else:
+            cr.execute('''
+                     DELETE tabla WHERE ID  = ?''', (id,))
+            base_de_datos.commit()
+            print("Datos ingresados existosamente")
 
-        limpiar_tabla(tabla)
-        rellenar_tabla(tabla)
+            limpiar_tabla(tabla)
+            rellenar_tabla(tabla)
 
     btn = Button(ventana, text="eliminar", command=eliminador)
     btn.pack()
@@ -148,14 +158,14 @@ app.title("Aplicacion y tablas")
 
 marco = Frame(app)
 marco.grid(row=1,column=0)
-tabla = ttk.Treeview(marco, columns=("ID", "Nombre", "Edad","Stock"), show="headings")
+tabla = ttk.Treeview(marco, columns=("ID", "Nombre", "Precio","Stock"), show="headings")
 marco2 = Frame(app)
 marco2.grid(row = 2, column = 0)
 
 
 tabla.heading("ID", text="ID")
 tabla.heading("Nombre", text="Nombre")
-tabla.heading("Edad", text="Edad")
+tabla.heading("Precio", text="Precio")
 tabla.heading("Stock", text ="Stock")
 
 
