@@ -1,4 +1,4 @@
-
+from sqlite3 import *
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
@@ -63,7 +63,9 @@ def ingresarDatos():
                 VALUES(?,?,?)''',(Nombre, Precio, Stock))
             base_de_datos.commit()
             print("Datos ingresados existosamente")
-
+            caja.delete(0,END)
+            caja2.delete(0, END)
+            caja3.delete(0, END)
             limpiar_tabla(tabla)
             rellenar_tabla(tabla)
 
@@ -112,7 +114,10 @@ def modificar():
                SET Nombre = ?, Precio = ?, Stock = ?
                WHERE ID = ? ''', (Nombre, Precio, Stock,ID))
             base_de_datos.commit()
-            print("Datos ingresados existosamente")
+
+            caja.delete(0, END)
+            caja2.delete(0, END)
+            caja3.delete(0, END)
 
             limpiar_tabla(tabla)
             rellenar_tabla(tabla)
@@ -144,7 +149,10 @@ def eliminar():
             cr.execute('''
                      DELETE tabla WHERE ID  = ?''', (id,))
             base_de_datos.commit()
-            print("Datos ingresados existosamente")
+
+            caja.delete(0, END)
+            caja2.delete(0, END)
+            caja3.delete(0, END)
 
             limpiar_tabla(tabla)
             rellenar_tabla(tabla)
